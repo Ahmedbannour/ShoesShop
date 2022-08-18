@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
                 $table->string('name');
                 $table->string('description');
                 $table->double('price' ,8,2);
-                $table->string('p_image');
                 $table->integer('qteStock');
                 $table->string('color');
                 $table->timestamps();

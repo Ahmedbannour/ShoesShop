@@ -58,20 +58,6 @@
         </div>
 
         <div class="form-group row">
-            <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('image') }}</label>
-
-            <div class="col-md-6">
-                <input id="image" type="file" wire:model="p_image" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image">
-
-                @error('image')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-        </div>
-
-        <div class="form-group row">
             <label for="qteStock" class="col-md-4 col-form-label text-md-right">{{ __('qteStock') }}</label>
 
             <div class="col-md-6">

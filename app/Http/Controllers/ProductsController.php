@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
@@ -15,8 +17,7 @@ class ProductsController extends Controller
     public function index()
     {
         $prods = Product::with(['photos' => function ($query) {
-            $query->with(['sizes'])
-            ->groupBy('photos.name');
+            $query->with(['sizes']);
         }])->get();
         return $prods;
     }
@@ -85,5 +86,26 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function passCommand(Request $request)
+    {
+        if (is_array($request->products) || is_object($request->products))
+        {
+
+        foreach($request->products as $commande){
+            DB::insert('insert into command (product_id, user_id , image , qte , size , created_at) values (?, ? , ? , ? , ? , ?)',
+             [
+                $commande['id'],
+                $commande['client'],
+                $commande['p_image'],
+                $commande['qte'],
+                $commande['size'],
+                Carbon::now()
+             ]
+            );
+        }
+    }
+        return $request->products;
     }
 }

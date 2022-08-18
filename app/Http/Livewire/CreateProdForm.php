@@ -19,7 +19,6 @@ class CreateProdForm extends Component
     public $description;
     public $price;
     public $qteStock;
-    public $p_image;
     public $size;
     public $qte;
     public $photo;
@@ -55,7 +54,6 @@ class CreateProdForm extends Component
                     'color' => 'required|string|max:255',
                     'description' => 'required|string|min:8',
                     'qteStock' => 'required|int',
-                    'p_image' => 'image|max:1024',
                     'price' => 'required|int',
             ]);
         }elseif($this->currentStep ==2){
@@ -115,25 +113,39 @@ class CreateProdForm extends Component
         $prod->price = $this->price;
         $prod->qteStock = $this->qteStock;
         $prod->color = $this->color;
-        $imageName = time().'.'.substr($this->p_image->getClientOriginalName(), strpos($this->p_image->getClientOriginalName(), ".") + 1);
-        $this->p_image->storeAs('public/images/', $imageName);
-        $prod->p_image = $imageName;
         $prodSaved = $prod->save();
+        $id = 0;
         if($prodSaved){
             for($j=0 ; $j<=$this->i ; $j++){
-                $ph = new Photo();
-                $phName = time().'.'.substr($this->photo[$j]->getClientOriginalName(), strpos($this->photo[$j]->getClientOriginalName(), ".") + 1);
-                $this->photo[$j]->storeAs('public/images/'.$this->name, $phName);
-                $ph->name = $phName;
-                $ph->product_id = $prod->id;
-                if($ph->save()){
-                    session()->flash('success','Photo '.$ph->name. ' added successfully');
-                }else{
-                    session()->flash('danger','Sorry ! photo '.$ph->name. ' added yet!!');
-                }
-                $ph->sizes()->attach($this->size[$j],['qte'=>$this->qte[$j],'photo_id'=>$ph->id]);
+                    $checkPh = Photo::where(
+                        'name','=', $this->photo[$j]->getClientOriginalName(),
+                    )->where(
+                        'product_id','=', $prod->id,
+                    )->first();
+                    if($checkPh != null){
+                        $checkPh->sizes()->attach($this->size[$j],['qte'=>$this->qte[$j],'photo_id'=>$checkPh->id]);
+                    }else{
+                        $ph = new Photo();
+                        $phName =$this->photo[$j]->getClientOriginalName();
+                        $this->photo[$j]->storeAs('/public/images/'.$this->name , $phName);
+                        $ph->name = $phName;
+                        $ph->product_id = $prod->id;
+                        if($ph->save()){
+                            session()->flash('success','Photo '.$ph->name. ' added successfully');
+                            $id = $ph->id;
+                        }else{
+                            session()->flash('danger','Sorry ! photo '.$ph->name. ' added yet!!');
+                        }
+                        $ph->sizes()->attach($this->size[$j],['qte'=>$this->qte[$j],'photo_id'=>$ph->id]);
+                    }
             }
             session()->flash('success','Product  '.$prod->name. ' Added successfully');
+            $checkPh = Photo::where(
+                'name','=', $this->photo[0]->getClientOriginalName(),
+            )->where(
+                'product_id','=', $prod->id,
+            )->first();
+
         }else{
             session()->flash('danger','Sorry ! Product '.$prod->name. ' added yet!!');
         }

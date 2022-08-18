@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/prods' , 'ProductsController@index');
+Route::post('/sendCommande' , 'ProductsController@passCommand');
 
 
 Route::post('/sanctum/token', function (Request $request) {

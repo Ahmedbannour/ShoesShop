@@ -20,11 +20,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        // $prods = Product::with(['photos' => function ($query) {
-        //     $query->with(['sizes'])
-        //     ->groupBy('photos.name');
-        // }])->get();
-        return view('admin.products.index');
+        $prods = Product::with(['photos' => function ($query) {
+            $query->with(['sizes']);
+        }])->get();
+        return view('admin.products.index')->with('products',$prods);
     }
 
     /**
@@ -56,10 +55,7 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        // $product = Product::with(['photos' => function ($query) {
-        //     $query->with(['sizes']);
-        // }])->find($id);
-        // return view('admin.products.details' , ['prod' => $product]);
+        return view('admin.products.details' , ['prod' => $product]);
     }
 
     /**
@@ -70,9 +66,11 @@ class ProductsController extends Controller
      */
     public function edit(Request $id)
     {
-        $prod = Product::find($id);
-
-        return view('admin.products.details' , ['prod' => $prod]);
+        // $prod = Product::with(['photos' => function ($query) {
+        //     $query->with(['sizes'])
+        //     ->groupBy('photos.name');
+        // }])->find($id);
+        // return view('admin.products.details' , ['prod' => $prod]);
 
     }
 

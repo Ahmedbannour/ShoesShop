@@ -23,10 +23,10 @@
                             <th>Action</th>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($products as $prod)
+                            @foreach ($products as $prod)
                                 <tr>
                                     <td>
-                                        <img src="{{asset('storage/images/'.$prod->p_image) }}" alt="nope" style="object-fit: contain ; width : 150px ; height : 150px">
+                                        <img src="{{asset('storage/images/'.$prod->name.'/'.$prod->photos[0]->name) }}" alt="nope" style="object-fit: contain ; width : 150px ; height : 150px">
                                     </td>
                                     </td>
                                     <td>
@@ -36,12 +36,12 @@
                                         {{$prod->price}}
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-warning deteil-btn">
+                                        <a href="{{route('admin.products.show' , $prod->id)}}" class="btn btn-warning deteil-btn">
                                             Details
                                         </a>
-                                    </td> --}}
-                                {{-- </tr> --}}
-                            {{-- @endforeach --}}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -50,6 +50,6 @@
     </div>
 </div>
 
-@include('admin.products.details')
+{{-- @include('admin.products.details') --}}
 
 @endsection
