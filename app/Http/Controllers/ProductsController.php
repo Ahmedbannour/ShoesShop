@@ -15,7 +15,8 @@ class ProductsController extends Controller
     public function index()
     {
         $prods = Product::with(['photos' => function ($query) {
-            $query->with(['sizes']);
+            $query->with(['sizes'])
+            ->groupBy('photos.name');
         }])->get();
         return $prods;
     }

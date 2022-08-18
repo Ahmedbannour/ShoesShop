@@ -116,24 +116,29 @@ class CreateProdForm extends Component
         $prod->qteStock = $this->qteStock;
         $prod->color = $this->color;
         $imageName = time().'.'.substr($this->p_image->getClientOriginalName(), strpos($this->p_image->getClientOriginalName(), ".") + 1);
-        $this->p_image->storeAs('images/', $imageName);
+        $this->p_image->storeAs('public/images/', $imageName);
         $prod->p_image = $imageName;
         $prodSaved = $prod->save();
         if($prodSaved){
             for($j=0 ; $j<=$this->i ; $j++){
                 $ph = new Photo();
                 $phName = time().'.'.substr($this->photo[$j]->getClientOriginalName(), strpos($this->photo[$j]->getClientOriginalName(), ".") + 1);
-                $this->photo[$j]->storeAs('images/'.$this->name, $phName);
+                $this->photo[$j]->storeAs('public/images/'.$this->name, $phName);
                 $ph->name = $phName;
                 $ph->product_id = $prod->id;
-                $ph->save();
+                if($ph->save()){
+                    session()->flash('success','Photo '.$ph->name. ' added successfully');
+                }else{
+                    session()->flash('danger','Sorry ! photo '.$ph->name. ' added yet!!');
+                }
                 $ph->sizes()->attach($this->size[$j],['qte'=>$this->qte[$j],'photo_id'=>$ph->id]);
             }
+            session()->flash('success','Product  '.$prod->name. ' Added successfully');
+        }else{
+            session()->flash('danger','Sorry ! Product '.$prod->name. ' added yet!!');
         }
+        return redirect()->route('admin.products.index');
 
-
-
-        dd($this->photo);
 
 
     }

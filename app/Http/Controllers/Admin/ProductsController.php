@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Product;
-use App\User;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +20,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products =Product::all();
-        return view('admin.products.index')->with('products',$products);
+        // $prods = Product::with(['photos' => function ($query) {
+        //     $query->with(['sizes'])
+        //     ->groupBy('photos.name');
+        // }])->get();
+        return view('admin.products.index');
     }
 
     /**
@@ -44,33 +51,39 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Product $product)
     {
-        //
+        // $product = Product::with(['photos' => function ($query) {
+        //     $query->with(['sizes']);
+        // }])->find($id);
+        // return view('admin.products.details' , ['prod' => $product]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Request $id)
     {
-        //
+        $prod = Product::find($id);
+
+        return view('admin.products.details' , ['prod' => $prod]);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -78,10 +91,10 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Product $product)
     {
         //
     }

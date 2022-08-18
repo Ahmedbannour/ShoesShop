@@ -20,12 +20,14 @@
                             <th>image</th>
                             <th>name</th>
                             <th>price</th>
+                            <th>Action</th>
                         </thead>
                         <tbody>
-                            @foreach ($products as $prod)
+                            {{-- @foreach ($products as $prod)
                                 <tr>
                                     <td>
-                                        {{$prod->p_image}}
+                                        <img src="{{asset('storage/images/'.$prod->p_image) }}" alt="nope" style="object-fit: contain ; width : 150px ; height : 150px">
+                                    </td>
                                     </td>
                                     <td>
                                         {{$prod->name}}
@@ -33,8 +35,13 @@
                                     <td>
                                         {{$prod->price}}
                                     </td>
-                                </tr>
-                            @endforeach
+                                    <td>
+                                        <a href="#" class="btn btn-warning deteil-btn">
+                                            Details
+                                        </a>
+                                    </td> --}}
+                                {{-- </tr> --}}
+                            {{-- @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -42,4 +49,7 @@
         </div>
     </div>
 </div>
+
+@include('admin.products.details')
+
 @endsection

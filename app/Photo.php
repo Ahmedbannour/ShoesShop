@@ -18,7 +18,8 @@ class Photo extends Model
       return $this->belongsTo('App\Product', 'id');
     }
     public function sizes(){
-        return $this->belongsToMany('App\Sizes', 'photo_sizes', 'photo_id', 'size_id');
+        return $this->belongsToMany('App\Sizes', 'photo_sizes', 'photo_id', 'size_id')
+        ->withPivot(['qte']);
     }
 }
 
